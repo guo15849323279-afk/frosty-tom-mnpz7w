@@ -964,7 +964,6 @@ export default function App() {
       }
       setTimeout(() => setToastMsg(null), 4000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [historyData, diaryEntries, isReady]);
 
   // --- 日记功能函数 ---
@@ -1505,52 +1504,52 @@ export default function App() {
 
       <div className="max-w-2xl mx-auto">
         {/* Header 操作栏 */}
-        <header className="mb-6 relative">
-          <div className="absolute top-0 right-0 flex gap-1 md:gap-2">
+        <header className="mb-6">
+          {/* 顶层：功能按钮组 */}
+          <div className="flex justify-end gap-2 mb-2">
             <button
               onClick={() => setShowDiary(true)}
-              className="p-2 text-slate-400 hover:text-teal-600 hover:bg-teal-50 rounded-full transition flex items-center gap-1 text-sm font-medium"
+              className="px-3 py-2 text-slate-500 hover:text-teal-600 hover:bg-teal-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
             >
-              <PenTool className="w-5 h-5" />{" "}
-              <span className="hidden md:inline">日记</span>
+              <PenTool className="w-4 h-4" /> <span>日记</span>
             </button>
             <button
               onClick={() => setShowAchievements(true)}
-              className="p-2 text-slate-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition flex items-center gap-1 text-sm font-medium"
+              className="px-3 py-2 text-slate-500 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
             >
-              <Award className="w-5 h-5" />{" "}
-              <span className="hidden md:inline">成就</span>
+              <Award className="w-4 h-4" /> <span>成就</span>
             </button>
             <button
               onClick={() => setIsEditing(true)}
-              className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition flex items-center gap-1 text-sm font-medium"
+              className="px-3 py-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
             >
-              <Settings className="w-5 h-5" />{" "}
-              <span className="hidden md:inline">定制</span>
+              <Settings className="w-4 h-4" /> <span>定制</span>
             </button>
           </div>
 
-          <div className="flex justify-between items-end mt-12 md:mt-8">
+          {/* 底层：标题与时间 */}
+          <div className="flex justify-between items-end">
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+              <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
                 极简·心流
               </h1>
-              <p className="text-slate-500 mt-1 flex items-center gap-1">
+              <p className="text-xs md:text-sm text-slate-500 mt-2 font-medium">
                 天赋加持，高效输出。少即是多。
               </p>
             </div>
-            <div className="text-right pr-4 md:pr-0">
-              <p className="text-2xl font-semibold text-indigo-600 tracking-wider">
+            <div className="text-right">
+              <p className="text-2xl md:text-3xl font-black text-indigo-600 tracking-wider">
                 {currentDate.toLocaleTimeString("zh-CN", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
               </p>
-              <p className="text-sm text-slate-500">{weekDays[dayOfWeek]}</p>
+              <p className="text-xs md:text-sm text-slate-500 mt-1 font-medium">
+                {weekDays[dayOfWeek]}
+              </p>
             </div>
           </div>
         </header>
-
         {/* 游戏化等级与连胜面板 */}
         <div className="bg-gradient-to-r from-indigo-900 to-indigo-700 rounded-3xl p-6 text-white shadow-lg mb-6 flex items-center justify-between">
           <div className="flex-1">
