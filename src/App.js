@@ -1826,6 +1826,17 @@ export default function App() {
                     你的所有数据均保存在你的本地浏览器中，没有任何人能偷窥你的心血。
                   </p>
                 </div>
+                {/* 📱 数据同步提醒 */}
+                <div className="p-3 bg-orange-50 rounded-xl border border-orange-100 shadow-sm">
+                  <p className="font-bold text-orange-800 mb-1 flex items-center gap-1.5 text-xs">
+                    <span className="text-sm">⚠️</span> 重要提醒
+                  </p>
+                  <p className="text-orange-700 text-[10px] leading-relaxed">
+                    由于数据完全本地化，
+                    <strong>手机和电脑的数据是不互通的</strong>
+                    。更换设备或清理浏览器缓存会导致数据丢失，建议定期使用“导出”功能备份。
+                  </p>
+                </div>
 
                 <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
                   <p className="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
