@@ -39,6 +39,10 @@ import {
   AlignLeft,
   History,
   BookHeart,
+  Heart,
+  Download,
+  Bell,
+  Mail,
 } from "lucide-react";
 
 // --- 默认课表数据 ---
@@ -800,9 +804,11 @@ const ACHIEVEMENTS = [
     icon: Crown,
   },
 ];
-
 export default function App() {
+  const [showAbout, setShowAbout] = useState(false);
+  const [showDonate, setShowDonate] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
+
   const [checkedTasks, setCheckedTasks] = useState([]);
   const [historyData, setHistoryData] = useState({});
   const [toastMsg, setToastMsg] = useState(null);
@@ -825,6 +831,13 @@ export default function App() {
     reflection: "",
     other: "",
   });
+
+  // 👇👇👇 刚刚粘贴的导出功能在这里 👇👇👇
+  // 💾 数据导出功能
+  const handleExportData = () => {
+    // ... (导出的具体逻辑代码) ...
+  };
+  // 👆👆👆 导出功能到这里结束 👆👆👆
 
   // 初始化读取本地数据
   useEffect(() => {
@@ -1525,6 +1538,24 @@ export default function App() {
             >
               <Settings className="w-4 h-4" /> <span>定制</span>
             </button>
+            <button
+              onClick={() => setShowDonate(true)}
+              className="px-3 py-2 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
+            >
+              <Coffee className="w-4 h-4" /> <span>赞助</span>
+            </button>
+            <button
+              onClick={handleExportData}
+              className="px-3 py-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
+            >
+              <Download className="w-4 h-4" /> <span>导出</span>
+            </button>
+            <button
+              onClick={() => setShowAbout(true)}
+              className="px-3 py-2 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
+            >
+              <Mail className="w-4 h-4" /> <span>关于</span>
+            </button>
           </div>
 
           {/* 底层：标题与时间 */}
@@ -1727,6 +1758,100 @@ export default function App() {
         <footer className="mt-12 text-center text-slate-400 text-sm">
           <p>掌控时间，不断进化。</p>
         </footer>
+        {/* ☕ 打赏模态框 */}
+        {showDonate && (
+          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+            <div className="bg-white p-6 md:p-8 rounded-3xl max-w-sm w-full shadow-2xl relative">
+              <div className="text-center mb-6">
+                <div className="w-12 h-12 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Coffee className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-black text-slate-800">
+                  请开发者喝杯咖啡
+                </h3>
+                <p className="text-sm text-slate-500 mt-2 font-medium">
+                  如果你觉得这个工具对你有帮助，
+                  <br />
+                  欢迎打赏支持我的持续开发！
+                </p>
+              </div>
+
+              {/* 二维码区域（单微信版） */}
+              <div className="flex flex-col items-center justify-center mb-6">
+                <div className="w-48 aspect-square bg-slate-50 rounded-2xl border-2 border-slate-100 p-2 overflow-hidden mb-3 shadow-inner">
+                  <img
+                    src="/wechat.jpg"
+                    alt="微信赞助"
+                    className="w-full h-full object-cover rounded-xl"
+                  />
+                </div>
+                <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">
+                  微信扫码，赞助开发者
+                </span>
+              </div>
+
+              <button
+                onClick={() => setShowDonate(false)}
+                className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition duration-200"
+              >
+                下次一定 / 关闭
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ✉️ 关于与公告模态框 */}
+        {showAbout && (
+          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+            <div className="bg-white p-6 md:p-8 rounded-3xl max-w-md w-full shadow-2xl relative">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shrink-0">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-black text-slate-800">
+                  关于「极简·心流」
+                </h3>
+              </div>
+
+              <div className="space-y-4 text-sm text-slate-600 leading-relaxed bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                <p>
+                  这原本是我为自己打造的效率工具，旨在摒弃一切干扰，专注于当下。很高兴它也能帮到你。
+                </p>
+
+                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
+                  <p className="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+                    <span className="text-lg">🔒</span> 隐私承诺
+                  </p>
+                  <p className="text-slate-500 text-xs">
+                    你的所有数据均保存在你的本地浏览器中，没有任何人能偷窥你的心血。
+                  </p>
+                </div>
+
+                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
+                  <p className="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+                    <span className="text-lg">✉️</span> 联系开发者
+                  </p>
+                  <p className="text-slate-500 text-xs mb-2">
+                    如果有任何建议、Bug 反馈，欢迎随时发邮件给我：
+                  </p>
+                  <a
+                    href="mailto:guo15849323279@163.com"
+                    className="inline-block text-emerald-600 font-mono font-bold bg-emerald-50 px-3 py-1.5 rounded-lg hover:bg-emerald-100 transition"
+                  >
+                    guo15849323279@163.com
+                  </a>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowAbout(false)}
+                className="mt-6 w-full py-3 bg-slate-800 hover:bg-slate-900 text-white rounded-2xl font-bold transition duration-200 shadow-lg shadow-slate-200"
+              >
+                好的，继续专注
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
