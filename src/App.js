@@ -835,7 +835,38 @@ export default function App() {
   // 👇👇👇 刚刚粘贴的导出功能在这里 👇👇👇
   // 💾 数据导出功能
   const handleExportData = () => {
-    // ... (导出的具体逻辑代码) ...
+    try {
+      // 1. 获取本地存储的所有数据
+      const allData = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        allData[key] = localStorage.getItem(key);
+      }
+
+      // 2. 检查是否有数据
+      if (Object.keys(allData).length === 0) {
+        alert("目前还没有存储任何数据。");
+        return;
+      }
+
+      // 3. 转化为 JSON 字符串并创建下载
+      const dataStr = JSON.stringify(allData, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `极简心流备份_${new Date().toLocaleDateString()}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      alert("导出成功！数据已妥善备份。");
+    } catch (error) {
+      console.error("导出失败:", error);
+      alert("导出失败，请在电脑浏览器尝试。");
+    }
   };
   // 👆👆👆 导出功能到这里结束 👆👆👆
 
