@@ -1900,7 +1900,7 @@ export default function App() {
                   <p className="text-orange-700 text-[10px] leading-relaxed">
                     由于数据完全本地化，
                     <strong>手机和电脑的数据是不互通的</strong>
-                    。更换设备或清理浏览器缓存会导致数据丢失，建议定期使用“导出”功能备份。
+                    。更换设备或清理浏览器缓存会导致数据丢失，建议定期使用“导出”功能备份；中英文切换和深色模式正在熬夜优化中（已累瘫）
                   </p>
                 </div>
 
