@@ -1307,10 +1307,10 @@ export default function App() {
               return (
                 <div
                   key={ach.id}
-                  className={`p-4 rounded-2xl border-2 flex items-center gap-4 transition-all duration-500 ${
+                  className={`p-4 rounded-xl border-2 flex items-center gap-4 transition-all duration-300 ${
                     isUnlocked
                       ? rConf.color
-                      : "bg-slate-50 border-slate-100 grayscale opacity-50"
+                      : "bg-slate-50 border-slate-100 opacity-50"
                   }`}
                 >
                   <div
@@ -1538,12 +1538,7 @@ export default function App() {
             >
               <Settings className="w-4 h-4" /> <span>定制</span>
             </button>
-            <button
-              onClick={() => setShowDonate(true)}
-              className="px-3 py-2 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
-            >
-              <Coffee className="w-4 h-4" /> <span>赞助</span>
-            </button>
+
             <button
               onClick={handleExportData}
               className="px-3 py-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
@@ -1629,7 +1624,6 @@ export default function App() {
             </p>
           </div>
         </div>
-
         {/* 绝对回血期提醒 */}
         {isRestPeriod && (
           <div className="mb-6 bg-emerald-500 rounded-3xl p-6 text-white shadow-lg shadow-emerald-200 border-2 border-emerald-400 animate-pulse">
@@ -1644,7 +1638,6 @@ export default function App() {
             </p>
           </div>
         )}
-
         {/* 今日打卡时间线 */}
         <div className="space-y-4">
           <div className="flex justify-between items-center mb-4">
@@ -1754,7 +1747,6 @@ export default function App() {
             );
           })}
         </div>
-
         <footer className="mt-12 text-center text-slate-400 text-sm">
           <p>掌控时间，不断进化。</p>
         </footer>
@@ -1799,7 +1791,6 @@ export default function App() {
             </div>
           </div>
         )}
-
         {/* ✉️ 关于与公告模态框 */}
         {showAbout && (
           <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
@@ -1863,6 +1854,21 @@ export default function App() {
             </div>
           </div>
         )}
+        {/* ================= 底部页脚区域 ================= */}
+        <div className="mt-16 pb-8 border-t border-slate-200 pt-8 flex flex-col items-center justify-center text-slate-400">
+          <button
+            onClick={() => setShowDonate(true)}
+            className="flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-orange-50 hover:text-orange-600 text-slate-500 rounded-full transition-all duration-300"
+          >
+            <Coffee className="w-4 h-4" />
+            <span className="text-sm font-bold">请开发者喝杯咖啡</span>
+          </button>
+
+          {/* 极客专属签名 */}
+          <p className="mt-6 text-xs tracking-widest uppercase opacity-60">
+            Designed & Built by ZAI
+          </p>
+        </div>{" "}
       </div>
     </div>
   );
