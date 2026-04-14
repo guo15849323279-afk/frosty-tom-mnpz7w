@@ -832,6 +832,31 @@ export default function App() {
     other: "",
   });
 
+  // 1. 深色模式状态 (默认读取本地存储)
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  // 2. 中英文状态 (默认读取本地存储，如果是外国人访问默认英文)
+  const [isEnglish, setIsEnglish] = useState(() => {
+    return localStorage.getItem("language") === "en";
+  });
+
+  // 3. 监听深色模式变化并存入缓存
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkMode]);
+
+  // 4. 监听语言变化并存入缓存
+  useEffect(() => {
+    localStorage.setItem("language", isEnglish ? "en" : "zh");
+  }, [isEnglish]);
   // 👇👇👇 刚刚粘贴的导出功能在这里 👇👇👇
   // 💾 数据导出功能
   const handleExportData = () => {
@@ -1119,8 +1144,8 @@ export default function App() {
     );
 
     return (
-      <div className="min-h-screen bg-slate-100 text-slate-800 font-sans p-4 md:p-8 pb-24">
-        <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans p-4 md:p-8 pb-24 transition-colors duration-500">
+        <div className="max-w-3xl mx-auto bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden transition-colors duration-500">
           {/* Header */}
           <div className="bg-teal-500 p-6 md:p-8 text-white flex justify-between items-center relative overflow-hidden">
             <div className="relative z-10">
@@ -1310,7 +1335,7 @@ export default function App() {
   // ================= 渲染：成就陈列室 =================
   if (showAchievements) {
     return (
-      <div className="min-h-screen bg-slate-100 text-slate-800 font-sans p-4 md:p-8 pb-24">
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans p-4 md:p-8 pb-24 transition-colors duration-500">
         <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
           <div className="bg-yellow-500 p-8 text-white flex justify-between items-center relative overflow-hidden">
             <div className="relative z-10">
@@ -1379,7 +1404,7 @@ export default function App() {
   if (isEditing) {
     return (
       <div className="min-h-screen bg-slate-100 text-slate-800 font-sans p-4 md:p-8 pb-24">
-        <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
+        <div className="max-w-3xl mx-auto bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden transition-colors duration-500">
           <div className="bg-indigo-600 p-6 text-white flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -1587,11 +1612,13 @@ export default function App() {
           {/* 底层：标题与时间 */}
           <div className="flex justify-between items-end">
             <div>
-              <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-                极简·心流
+              <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+                {isEnglish ? "Mind Flow" : "极简·心流"}
               </h1>
-              <p className="text-xs md:text-sm text-slate-500 mt-2 font-medium">
-                天赋加持，高效输出。少即是多。
+              <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-2 font-medium">
+                {isEnglish
+                  ? "Focus deeper, output faster. Less is more."
+                  : "天赋加持，高效输出。少即是多。"}
               </p>
             </div>
             <div className="text-right">
@@ -1605,6 +1632,23 @@ export default function App() {
                 {weekDays[dayOfWeek]}
               </p>
             </div>
+          </div>
+          {/* 系统设置栏：深色模式与中英切换 */}
+          <div className="flex justify-end items-center gap-2 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <button
+              onClick={() => setIsEnglish(!isEnglish)}
+              className="w-8 h-6 flex items-center justify-center text-xs border border-slate-300 rounded opacity-40 hover:opacity-100 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800 dark:text-slate-300 transition-all"
+              title={isEnglish ? "切换为中文" : "Switch to English"}
+            >
+              {isEnglish ? "ZH" : "EN"}
+            </button>
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="w-8 h-6 flex items-center justify-center text-xs border border-slate-300 rounded opacity-40 hover:opacity-100 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800 transition-all"
+              title={isDarkMode ? "切换为浅色" : "Switch to Dark Mode"}
+            >
+              {isDarkMode ? "☀️" : "🌙"}
+            </button>
           </div>
         </header>
         {/* 游戏化等级与连胜面板 */}
