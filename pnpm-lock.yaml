@@ -4,38 +4,39 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-importers:
+dependencies:
+  i18next:
+    specifier: ^26.0.4
+    version: 26.0.4(typescript@5.7.2)
+  lucide-react:
+    specifier: 1.8.0
+    version: 1.8.0(react@19.2.5)
+  react:
+    specifier: ^19.0.0
+    version: 19.2.5
+  react-dom:
+    specifier: ^19.0.0
+    version: 19.2.5(react@19.2.5)
+  react-i18next:
+    specifier: ^17.0.2
+    version: 17.0.2(i18next@26.0.4)(react-dom@19.2.5)(react@19.2.5)(typescript@5.7.2)
+  react-scripts:
+    specifier: ^5.0.0
+    version: 5.0.1(@babel/plugin-syntax-flow@7.28.6)(@babel/plugin-transform-react-jsx@7.28.6)(eslint@8.57.1)(react@19.2.5)(typescript@5.7.2)
 
-  .:
-    dependencies:
-      lucide-react:
-        specifier: 1.8.0
-        version: 1.8.0(react@19.2.5)
-      react:
-        specifier: ^19.0.0
-        version: 19.2.5
-      react-dom:
-        specifier: ^19.0.0
-        version: 19.2.5(react@19.2.5)
-      react-scripts:
-        specifier: ^5.0.0
-        version: 5.0.1(@babel/plugin-syntax-flow@7.28.6(@babel/core@7.29.0))(@babel/plugin-transform-react-jsx@7.28.6(@babel/core@7.29.0))(@types/babel__core@7.20.5)(eslint@8.57.1)(react@19.2.5)(type-fest@0.21.3)(typescript@5.7.2)
-    devDependencies:
-      '@types/react':
-        specifier: 19.0.0
-        version: 19.0.0
-      '@types/react-dom':
-        specifier: 19.0.0
-        version: 19.0.0
-      loader-utils:
-        specifier: 3.2.1
-        version: 3.2.1
-      typescript:
-        specifier: 5.7.2
-        version: 5.7.2
-      wrangler:
-        specifier: ^4.82.2
-        version: 4.82.2
+devDependencies:
+  '@types/react':
+    specifier: 19.0.0
+    version: 19.0.0
+  '@types/react-dom':
+    specifier: 19.0.0
+    version: 19.0.0
+  loader-utils:
+    specifier: 3.2.1
+    version: 3.2.1
+  typescript:
+    specifier: 5.7.2
+    version: 5.7.2
 
 packages:
 
@@ -9531,7 +9532,23 @@ snapshots:
       relateurl: 0.2.7
       terser: 5.46.1
 
-  html-webpack-plugin@5.6.6(webpack@5.106.1):
+  /html-parse-stringify@3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
+
+  /html-webpack-plugin@5.6.6(webpack@5.106.1):
+    resolution: {integrity: sha512-bLjW01UTrvoWTJQL5LsMRo1SypHW80FTm12OJRSnr3v6YHNhfe+1r0MYUZJMACxnCHURVnBWRwAsWs2yPU9Ezw==}
+    engines: {node: '>=10.13.0'}
+    peerDependencies:
+      '@rspack/core': 0.x || 1.x
+      webpack: ^5.20.0
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+      webpack:
+        optional: true
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0
@@ -9605,7 +9622,21 @@ snapshots:
 
   human-signals@2.1.0: {}
 
-  iconv-lite@0.4.24:
+  /i18next@26.0.4(typescript@5.7.2):
+    resolution: {integrity: sha512-gXF7U9bfioXPLv7mw8Qt2nfO7vij5MyINvPgVv99pX3fL1Y01pw2mKBFrlYpRxRCl2wz3ISenj6VsMJT2isfuA==}
+    peerDependencies:
+      typescript: ^5 || ^6
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.29.2
+      typescript: 5.7.2
+    dev: false
+
+  /iconv-lite@0.4.24:
+    resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
+    engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
 
@@ -11330,7 +11361,34 @@ snapshots:
 
   react-error-overlay@6.1.0: {}
 
-  react-is@16.13.1: {}
+  /react-i18next@17.0.2(i18next@26.0.4)(react-dom@19.2.5)(react@19.2.5)(typescript@5.7.2):
+    resolution: {integrity: sha512-shBftH2vaTWK2Bsp7FiL+cevx3xFJlvFxmsDFQSrJc+6twHkP0tv/bGa01VVWzpreUVVwU+3Hev5iFqRg65RwA==}
+    peerDependencies:
+      i18next: '>= 26.0.1'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+      typescript: ^5 || ^6
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.29.2
+      html-parse-stringify: 3.0.1
+      i18next: 26.0.4(typescript@5.7.2)
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+      typescript: 5.7.2
+      use-sync-external-store: 1.6.0(react@19.2.5)
+    dev: false
+
+  /react-is@16.13.1:
+    resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
 
   react-is@17.0.2: {}
 
@@ -12289,7 +12347,17 @@ snapshots:
       querystringify: 2.2.0
       requires-port: 1.0.0
 
-  util-deprecate@1.0.2: {}
+  /use-sync-external-store@1.6.0(react@19.2.5):
+    resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    dependencies:
+      react: 19.2.5
+    dev: false
+
+  /util-deprecate@1.0.2:
+    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: false
 
   util.promisify@1.0.1:
     dependencies:
@@ -12312,7 +12380,14 @@ snapshots:
 
   vary@1.1.2: {}
 
-  w3c-hr-time@1.0.2:
+  /void-elements@3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  /w3c-hr-time@1.0.2:
+    resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==}
+    deprecated: Use your platform's native performance.now() and performance.timeOrigin.
     dependencies:
       browser-process-hrtime: 1.0.0
 

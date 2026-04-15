@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   CheckCircle2,
   Circle,
@@ -47,292 +48,58 @@ import {
 
 // --- 默认课表数据 ---
 const defaultSchedule = {
-  1: [
-    {
-      id: "mon_1",
-      time: "08:00 - 12:00",
-      title: "深度工作 / 核心课程",
-      desc: "唯一下午不排满的一天，专注听讲",
-      type: "class",
-    },
-    {
-      id: "mon_2",
-      time: "12:00 - 14:00",
-      title: "绝对回血期",
-      desc: "禁止学习，吃饭/午休/看剧",
-      type: "rest",
-    },
-    {
-      id: "mon_3",
-      time: "14:00 - 16:00",
-      title: "外语冲刺 / 技能练习",
-      desc: "保持手感和语感",
-      type: "focus",
-    },
-    {
-      id: "mon_4",
-      time: "16:00 - 18:00",
-      title: "钢铁之躯：健身房",
-      desc: "无氧力量 + 有氧，拉满内啡肽",
-      type: "workout",
-    },
-    {
-      id: "mon_5",
-      time: "19:30 - 21:30",
-      title: "AI 深度交流 / 前沿探索",
-      desc: "探讨前沿公式、写代码",
-      type: "tech",
-    },
-  ],
-  2: [
-    {
-      id: "tue_1",
-      time: "08:00 - 12:00",
-      title: "图书馆闭关：极简自学",
-      desc: "1.5h 重点划线 + 真题",
-      type: "self",
-    },
-    {
-      id: "tue_2",
-      time: "12:00 - 14:00",
-      title: "绝对回血期",
-      desc: "禁止学习，吃饭/午休/发呆",
-      type: "rest",
-    },
-    {
-      id: "tue_3",
-      time: "14:00 - 16:00",
-      title: "外语冲刺 / 技能练习",
-      desc: "保持手感和语感",
-      type: "focus",
-    },
-    {
-      id: "tue_4",
-      time: "16:00 - 18:00",
-      title: "钢铁之躯：健身房",
-      desc: "无氧力量 + 有氧，拉满内啡肽",
-      type: "workout",
-    },
-    {
-      id: "tue_6",
-      time: "21:30 - 23:00",
-      title: "视觉创作 / 爱好输出",
-      desc: "尝试AI辅助创作",
-      type: "creative",
-    },
-  ],
-  3: [
-    {
-      id: "wed_1",
-      time: "08:00 - 12:00",
-      title: "深度工作 / 核心课程",
-      desc: "课后直奔图书馆，2倍速速刷网课",
-      type: "class",
-    },
-    {
-      id: "wed_2",
-      time: "12:00 - 14:00",
-      title: "绝对回血期",
-      desc: "彻底断联，恢复精力",
-      type: "rest",
-    },
-    {
-      id: "wed_3",
-      time: "14:00 - 16:00",
-      title: "外语冲刺 / 技能练习",
-      desc: "保持手感和语感",
-      type: "focus",
-    },
-    {
-      id: "wed_4",
-      time: "16:00 - 18:00",
-      title: "钢铁之躯：健身房",
-      desc: "无氧力量 + 有氧，拉满内啡肽",
-      type: "workout",
-    },
-    {
-      id: "wed_5",
-      time: "19:30 - 21:30",
-      title: "AI 深度交流 / 变现探索",
-      desc: "探索变现项目",
-      type: "tech",
-    },
-  ],
-  4: [
-    {
-      id: "thu_1",
-      time: "08:00 - 12:00",
-      title: "图书馆闭关：极简自学",
-      desc: "搞定平时作业与阅读套题",
-      type: "self",
-    },
-    {
-      id: "thu_2",
-      time: "12:00 - 14:00",
-      title: "绝对回血期",
-      desc: "禁止学习，吃饭/午休/看剧",
-      type: "rest",
-    },
-    {
-      id: "thu_3",
-      time: "14:00 - 16:00",
-      title: "外语口语 / 技能进阶",
-      desc: "利用AI练口语，熟悉新技能",
-      type: "focus",
-    },
-    {
-      id: "thu_4",
-      time: "16:00 - 17:40",
-      title: "通识课程 / 碎片整理",
-      desc: "教室上课或整理笔记",
-      type: "class",
-    },
-    {
-      id: "thu_5",
-      time: "18:00 - 19:30",
-      title: "钢铁之躯：健身房",
-      desc: "错峰训练，高强度压缩",
-      type: "workout",
-    },
-  ],
-  5: [
-    {
-      id: "fri_1",
-      time: "08:00 - 12:00",
-      title: "深度工作 / 极简自学",
-      desc: "清理本周遗留",
-      type: "class",
-    },
-    {
-      id: "fri_2",
-      time: "12:00 - 14:00",
-      title: "绝对回血期",
-      desc: "彻底放松，迎接周末",
-      type: "rest",
-    },
-    {
-      id: "fri_3",
-      time: "14:00 - 16:00",
-      title: "模拟测试 / 技能保持",
-      desc: "保持手感和语感",
-      type: "focus",
-    },
-    {
-      id: "fri_4",
-      time: "16:00 - 18:00",
-      title: "钢铁之躯：健身房",
-      desc: "本周最后一次力量训练，力竭",
-      type: "workout",
-    },
-    {
-      id: "fri_6",
-      time: "21:30 - 23:00",
-      title: "视觉创作 / 灵感捕捉",
-      desc: "整理素材",
-      type: "creative",
-    },
-  ],
-  6: [
-    {
-      id: "sat_1",
-      time: "09:00 - 12:00",
-      title: "弹性日：全真模考 / 爱好",
-      desc: "睡到自然醒，状态好做模考",
-      type: "focus",
-    },
-    {
-      id: "sat_2",
-      time: "12:00 - 14:00",
-      title: "绝对回血期",
-      desc: "尽情娱乐",
-      type: "rest",
-    },
-    {
-      id: "sat_3",
-      time: "14:00 - 19:30",
-      title: "查漏补缺 + AI 探讨",
-      desc: "解决本周未解难题",
-      type: "tech",
-    },
-    {
-      id: "sat_4",
-      time: "19:30 - 23:00",
-      title: "自由狂欢",
-      desc: "沉浸在自己的热爱中",
-      type: "creative",
-    },
-  ],
-  0: [
-    {
-      id: "sun_1",
-      time: "08:00 - 20:00",
-      title: "12小时极限心流日",
-      desc: "纯粹的世界，脱离书本进行户外/深度创作。",
-      type: "creative",
-    },
-    {
-      id: "sun_2",
-      time: "20:00 - 22:30",
-      title: "素材归档与彻底放松",
-      desc: "导卡、充电、听歌休息，准备新的一周",
-      type: "rest",
-    },
-  ],
+  0: [], // 周日
+  1: [], // 周一
+  2: [], // 周二
+  3: [], // 周三
+  4: [], // 周四
+  5: [], // 周五
+  6: [], // 周六
 };
 
 // --- 类型与图标映射 ---
 const typeConfig = {
   class: {
-    label: "课程",
+    label: "tasks.type_course",
     color: "bg-blue-50 text-blue-700 border-blue-200",
     icon: BookOpen,
   },
   self: {
-    label: "自学",
+    label: "tasks.type_self",
     color: "bg-indigo-50 text-indigo-700 border-indigo-200",
     icon: BookOpen,
   },
   rest: {
-    label: "休息",
+    label: "tasks.type_rest",
     color: "bg-green-50 text-green-700 border-green-200",
     icon: Coffee,
   },
   focus: {
-    label: "专注",
+    label: "tasks.type_focus",
     color: "bg-orange-50 text-orange-700 border-orange-200",
     icon: Music,
   },
   workout: {
-    label: "运动",
+    label: "tasks.type_sport",
     color: "bg-red-50 text-red-700 border-red-200",
     icon: Dumbbell,
   },
   tech: {
-    label: "科技",
+    label: "tasks.type_tech",
     color: "bg-purple-50 text-purple-700 border-purple-200",
     icon: BrainCircuit,
   },
   creative: {
-    label: "创作",
+    label: "tasks.type_create",
     color: "bg-pink-50 text-pink-700 border-pink-200",
     icon: Video,
   },
   default: {
-    label: "通用",
+    label: "tasks.type_general",
     color: "bg-slate-50 text-slate-700 border-slate-200",
     icon: CheckCircle2,
   },
 };
-
-const weekDays = [
-  "星期日",
-  "星期一",
-  "星期二",
-  "星期三",
-  "星期四",
-  "星期五",
-  "星期六",
-];
 
 // --- 奖励层级设定 ---
 const getLevelInfo = (xp) => {
@@ -372,428 +139,296 @@ const ACHIEVEMENTS = [
   // 总任务量 (6)
   {
     id: "task_1",
-    title: "初出茅庐",
-    desc: "成功完成你的第 1 个任务",
     rarity: "common",
     condition: (s) => s.total >= 1,
     icon: Star,
   },
   {
     id: "task_10",
-    title: "渐入佳境",
-    desc: "累计完成 10 个任务",
     rarity: "common",
     condition: (s) => s.total >= 10,
     icon: Star,
   },
   {
     id: "task_50",
-    title: "百炼成钢",
-    desc: "累计完成 50 个任务",
     rarity: "rare",
     condition: (s) => s.total >= 50,
     icon: Target,
   },
   {
     id: "task_200",
-    title: "千锤百炼",
-    desc: "累计完成 200 个任务",
     rarity: "epic",
     condition: (s) => s.total >= 200,
     icon: Sparkles,
   },
   {
     id: "task_500",
-    title: "心流宗师",
-    desc: "累计完成 500 个任务",
     rarity: "legendary",
     condition: (s) => s.total >= 500,
     icon: Crown,
   },
   {
     id: "task_1000",
-    title: "极简大成",
-    desc: "累计完成 1000 个任务，无与伦比的毅力",
     rarity: "legendary",
     condition: (s) => s.total >= 1000,
     icon: Gem,
   },
-
   // 连胜 (8)
   {
     id: "streak_3",
-    title: "三日之约",
-    desc: "达成 3 天连胜",
     rarity: "common",
     condition: (s) => s.streak >= 3,
     icon: Flame,
   },
   {
     id: "streak_7",
-    title: "七日奇迹",
-    desc: "达成 7 天连胜",
     rarity: "rare",
     condition: (s) => s.streak >= 7,
     icon: Flame,
   },
   {
     id: "streak_14",
-    title: "坚持不懈",
-    desc: "达成 14 天连胜",
     rarity: "rare",
     condition: (s) => s.streak >= 14,
     icon: Flame,
   },
   {
     id: "streak_21",
-    title: "习惯养成",
-    desc: "达成 21 天连胜，形成肌肉记忆",
     rarity: "epic",
     condition: (s) => s.streak >= 21,
     icon: Flame,
   },
   {
     id: "streak_30",
-    title: "满月之誓",
-    desc: "达成 30 天连胜",
     rarity: "epic",
     condition: (s) => s.streak >= 30,
     icon: Flame,
   },
   {
     id: "streak_50",
-    title: "不可阻挡",
-    desc: "达成 50 天连胜",
     rarity: "legendary",
     condition: (s) => s.streak >= 50,
     icon: Flame,
   },
   {
     id: "streak_100",
-    title: "百日筑基",
-    desc: "连续 100 天没有中断",
     rarity: "legendary",
     condition: (s) => s.streak >= 100,
     icon: Trophy,
   },
   {
     id: "streak_365",
-    title: "岁月史书",
-    desc: "达成 365 天连胜，你创造了奇迹",
     rarity: "legendary",
     condition: (s) => s.streak >= 365,
     icon: Crown,
   },
-
   // 等级 (5)
   {
     id: "level_2",
-    title: "进阶行者",
-    desc: "账号达到 2 级",
     rarity: "common",
     condition: (s) => s.level >= 2,
     icon: Zap,
   },
-  {
-    id: "level_3",
-    title: "自律达人",
-    desc: "账号达到 3 级",
-    rarity: "rare",
-    condition: (s) => s.level >= 3,
-    icon: Zap,
-  },
-  {
-    id: "level_4",
-    title: "心流大师",
-    desc: "账号达到 4 级",
-    rarity: "epic",
-    condition: (s) => s.level >= 4,
-    icon: Zap,
-  },
+  { id: "level_3", rarity: "rare", condition: (s) => s.level >= 3, icon: Zap },
+  { id: "level_4", rarity: "epic", condition: (s) => s.level >= 4, icon: Zap },
   {
     id: "level_5",
-    title: "时间领主",
-    desc: "账号达到 5 级",
     rarity: "legendary",
     condition: (s) => s.level >= 5,
     icon: Zap,
   },
   {
     id: "level_10",
-    title: "维度掌控者",
-    desc: "账号达到 10 级",
     rarity: "legendary",
     condition: (s) => s.level >= 10,
     icon: Crown,
   },
-
   // 健身运动 (5)
   {
     id: "work_1",
-    title: "唤醒肌肉",
-    desc: "完成第 1 次运动打卡",
     rarity: "common",
     condition: (s) => s.workout >= 1,
     icon: Dumbbell,
   },
   {
     id: "work_10",
-    title: "钢铁之躯",
-    desc: "累计完成 10 次运动打卡",
     rarity: "rare",
     condition: (s) => s.workout >= 10,
     icon: Dumbbell,
   },
   {
     id: "work_50",
-    title: "挥汗如雨",
-    desc: "累计完成 50 次运动打卡",
     rarity: "epic",
     condition: (s) => s.workout >= 50,
     icon: Dumbbell,
   },
   {
     id: "work_100",
-    title: "塑形狂魔",
-    desc: "累计完成 100 次运动打卡",
     rarity: "epic",
     condition: (s) => s.workout >= 100,
     icon: Dumbbell,
   },
   {
     id: "work_300",
-    title: "健身房NPC",
-    desc: "累计完成 300 次运动，人类高质量肉体",
     rarity: "legendary",
     condition: (s) => s.workout >= 300,
     icon: Dumbbell,
   },
-
   // 深度学习/学业 (5)
   {
     id: "stu_1",
-    title: "知识之海",
-    desc: "完成第 1 次自学或核心课程",
     rarity: "common",
     condition: (s) => s.self + s.class >= 1,
     icon: BookOpen,
   },
   {
     id: "stu_10",
-    title: "学海无涯",
-    desc: "累计完成 10 次学术/自学任务",
     rarity: "rare",
     condition: (s) => s.self + s.class >= 10,
     icon: BookOpen,
   },
   {
     id: "stu_50",
-    title: "挑灯夜战",
-    desc: "累计完成 50 次学术/自学任务",
     rarity: "epic",
     condition: (s) => s.self + s.class >= 50,
     icon: BookOpen,
   },
   {
     id: "stu_100",
-    title: "核心壁垒",
-    desc: "累计完成 100 次学术/自学任务",
     rarity: "epic",
     condition: (s) => s.self + s.class >= 100,
     icon: BookOpen,
   },
   {
     id: "stu_300",
-    title: "知识即力量",
-    desc: "累计完成 300 次学术探索",
     rarity: "legendary",
     condition: (s) => s.self + s.class >= 300,
     icon: BookOpen,
   },
-
   // 技能/专注 (雅思/吉他等) (5)
   {
     id: "foc_1",
-    title: "全神贯注",
-    desc: "开启第 1 次技能专注时刻",
     rarity: "common",
     condition: (s) => s.focus >= 1,
     icon: Target,
   },
   {
     id: "foc_10",
-    title: "沉浸时刻",
-    desc: "累计专注技能 10 次",
     rarity: "rare",
     condition: (s) => s.focus >= 10,
     icon: Target,
   },
   {
     id: "foc_50",
-    title: "绝对专注",
-    desc: "累计专注技能 50 次",
     rarity: "epic",
     condition: (s) => s.focus >= 50,
     icon: Target,
   },
   {
     id: "foc_100",
-    title: "技艺精进",
-    desc: "累计专注技能 100 次",
     rarity: "epic",
     condition: (s) => s.focus >= 100,
     icon: Target,
   },
   {
     id: "foc_300",
-    title: "肌肉记忆",
-    desc: "累计专注 300 次，手到擒来",
     rarity: "legendary",
     condition: (s) => s.focus >= 300,
     icon: Target,
   },
-
   // 科技/AI (4)
   {
     id: "tech_1",
-    title: "硅基对话",
-    desc: "完成第 1 次 AI 与科技探索",
     rarity: "common",
     condition: (s) => s.tech >= 1,
     icon: BrainCircuit,
   },
-  {
-    id: "tech_10",
-    title: "极客觉醒",
-    desc: "累计完成 10 次科技探索",
-    rarity: "rare",
-    condition: (s) => s.tech >= 10,
-    icon: Cpu,
-  },
-  {
-    id: "tech_50",
-    title: "代码织布机",
-    desc: "累计完成 50 次科技与编程实践",
-    rarity: "epic",
-    condition: (s) => s.tech >= 50,
-    icon: Code,
-  },
+  { id: "tech_10", rarity: "rare", condition: (s) => s.tech >= 10, icon: Cpu },
+  { id: "tech_50", rarity: "epic", condition: (s) => s.tech >= 50, icon: Code },
   {
     id: "tech_100",
-    title: "AI造物主",
-    desc: "累计探索科技领域 100 次",
     rarity: "legendary",
     condition: (s) => s.tech >= 100,
     icon: Rocket,
   },
-
   // 创作/视觉 (摄影/剪辑) (4)
   {
     id: "cre_1",
-    title: "捕光捉影",
-    desc: "完成第 1 次创意/视觉产出",
     rarity: "common",
     condition: (s) => s.creative >= 1,
     icon: Camera,
   },
   {
     id: "cre_10",
-    title: "灵感如泉",
-    desc: "累计完成 10 次创作",
     rarity: "rare",
     condition: (s) => s.creative >= 10,
     icon: Lightbulb,
   },
   {
     id: "cre_50",
-    title: "视觉造梦师",
-    desc: "累计完成 50 次深度创作",
     rarity: "epic",
     condition: (s) => s.creative >= 50,
     icon: Video,
   },
   {
     id: "cre_100",
-    title: "传世之作",
-    desc: "累计创作 100 次，个人品牌成型",
     rarity: "legendary",
     condition: (s) => s.creative >= 100,
     icon: Gem,
   },
-
   // 休息与恢复 (4)
   {
     id: "rest_1",
-    title: "适时停歇",
-    desc: "完成第 1 次绝对回血",
     rarity: "common",
     condition: (s) => s.rest >= 1,
     icon: Coffee,
   },
   {
     id: "rest_10",
-    title: "张弛有度",
-    desc: "累计完成 10 次充足休息",
     rarity: "rare",
     condition: (s) => s.rest >= 10,
     icon: BatteryCharging,
   },
   {
     id: "rest_50",
-    title: "回血大师",
-    desc: "累计完成 50 次身心恢复",
     rarity: "epic",
     condition: (s) => s.rest >= 50,
     icon: Coffee,
   },
   {
     id: "rest_100",
-    title: "绝对静心",
-    desc: "累计完成 100 次冥想与休整",
     rarity: "legendary",
     condition: (s) => s.rest >= 100,
     icon: BatteryCharging,
   },
-
   // 日记系统专属成就 (2)
   {
     id: "diary_1",
-    title: "心灵捕手",
-    desc: "记录你的第一篇心流日记",
     rarity: "common",
     condition: (s) => s.diary >= 1,
     icon: PenTool,
   },
   {
     id: "diary_10",
-    title: "岁月史官",
-    desc: "累计记录 10 篇日记，直面内心",
     rarity: "epic",
     condition: (s) => s.diary >= 10,
     icon: BookHeart,
   },
-
   // 特殊组合成就 (3)
   {
     id: "combo_1",
-    title: "文武双全",
-    desc: "运动与学习均达到 10 次",
     rarity: "epic",
     condition: (s) => s.workout >= 10 && s.self + s.class >= 10,
     icon: Medal,
   },
   {
     id: "combo_2",
-    title: "科技与艺术",
-    desc: "科技与创作均达到 10 次",
     rarity: "epic",
     condition: (s) => s.tech >= 10 && s.creative >= 10,
     icon: Sparkles,
   },
   {
     id: "combo_3",
-    title: "全能多面手",
-    desc: "全面开花，所有维度突破 10",
     rarity: "legendary",
     condition: (s) =>
       s.workout >= 10 &&
@@ -805,6 +440,30 @@ const ACHIEVEMENTS = [
   },
 ];
 export default function App() {
+  // 1. 召唤翻译引擎（必须放在最前面！）
+  const { t, i18n } = useTranslation();
+
+  // 2. 配置双语星期数组
+  const weekDaysZh = [
+    "星期日",
+    "星期一",
+    "星期二",
+    "星期三",
+    "星期四",
+    "星期五",
+    "星期六",
+  ];
+  const weekDaysEn = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const weekDays = i18n.language === "en" ? weekDaysEn : weekDaysZh;
+  const dayOfWeek = new Date().getDay();
   const [showAbout, setShowAbout] = useState(false);
   const [showDonate, setShowDonate] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -818,6 +477,7 @@ export default function App() {
   const [showAchievements, setShowAchievements] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [scheduleData, setScheduleData] = useState(defaultSchedule);
+  const todayTasks = scheduleData[dayOfWeek] || [];
   const [isEditing, setIsEditing] = useState(false);
   const [editingDay, setEditingDay] = useState(new Date().getDay());
 
@@ -837,11 +497,6 @@ export default function App() {
     return localStorage.getItem("theme") === "dark";
   });
 
-  // 2. 中英文状态 (默认读取本地存储，如果是外国人访问默认英文)
-  const [isEnglish, setIsEnglish] = useState(() => {
-    return localStorage.getItem("language") === "en";
-  });
-
   // 3. 监听深色模式变化并存入缓存
   useEffect(() => {
     if (isDarkMode) {
@@ -853,10 +508,6 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  // 4. 监听语言变化并存入缓存
-  useEffect(() => {
-    localStorage.setItem("language", isEnglish ? "en" : "zh");
-  }, [isEnglish]);
   // 👇👇👇 刚刚粘贴的导出功能在这里 👇👇👇
   // 💾 数据导出功能
   const handleExportData = () => {
@@ -930,8 +581,6 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  const dayOfWeek = currentDate.getDay();
-  const todayTasks = scheduleData[dayOfWeek] || [];
   const hours = currentDate.getHours();
   const isRestPeriod = hours >= 12 && hours < 14;
 
@@ -1150,10 +799,10 @@ export default function App() {
           <div className="bg-teal-500 p-6 md:p-8 text-white flex justify-between items-center relative overflow-hidden">
             <div className="relative z-10">
               <h1 className="text-3xl font-bold flex items-center gap-2">
-                <PenTool className="w-8 h-8" /> 心流日记
+                <PenTool className="w-8 h-8" /> {t("journal.title")}
               </h1>
               <p className="text-teal-100 mt-2 text-sm">
-                与自己对话，是最深度的复盘。
+                {t("journal.subtitle")}
               </p>
             </div>
             <button
@@ -1175,7 +824,7 @@ export default function App() {
                   : "text-slate-400 hover:bg-slate-50"
               }`}
             >
-              <PenTool className="w-5 h-5" /> 今日沉淀
+              <PenTool className="w-5 h-5" /> {t("journal.tabWrite")}
             </button>
             <button
               onClick={() => setDiaryMode("history")}
@@ -1185,7 +834,7 @@ export default function App() {
                   : "text-slate-400 hover:bg-slate-50"
               }`}
             >
-              <History className="w-5 h-5" /> 过往回忆
+              <History className="w-5 h-5" /> {t("journal.tabHistory")}
             </button>
           </div>
 
@@ -1196,52 +845,53 @@ export default function App() {
                 {/* 1. 开心 */}
                 <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm focus-within:ring-2 ring-green-100 transition">
                   <h3 className="text-green-600 font-bold flex items-center gap-2 mb-3">
-                    <Smile className="w-5 h-5" /> 1. 开心的事
+                    <Smile className="w-5 h-5" />
+                    {t("journal.q1Title")}
                   </h3>
                   <textarea
                     value={currentDiary.happy}
                     onChange={(e) => handleDiaryChange("happy", e.target.value)}
-                    placeholder="今天有什么小确幸？或者完成了什么挑战？"
+                    placeholder={t("journal.q1Placeholder")}
                     className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 placeholder-slate-300"
                   />
                 </div>
                 {/* 2. 不开心 */}
                 <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm focus-within:ring-2 ring-slate-200 transition">
                   <h3 className="text-slate-500 font-bold flex items-center gap-2 mb-3">
-                    <Frown className="w-5 h-5" /> 2. 烦恼或阻碍
+                    <Frown className="w-5 h-5" /> {t("journal.q2Title")}
                   </h3>
                   <textarea
                     value={currentDiary.unhappy}
                     onChange={(e) =>
                       handleDiaryChange("unhappy", e.target.value)
                     }
-                    placeholder="遇到了什么困难？情绪低落的原因是什么？写出来释放掉。"
+                    placeholder={t("journal.q2Placeholder")}
                     className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 placeholder-slate-300"
                   />
                 </div>
                 {/* 3. 感悟 */}
                 <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm focus-within:ring-2 ring-yellow-100 transition">
                   <h3 className="text-yellow-600 font-bold flex items-center gap-2 mb-3">
-                    <Lightbulb className="w-5 h-5" /> 3. 今日感悟
+                    <Lightbulb className="w-5 h-5" /> {t("journal.q3Title")}
                   </h3>
                   <textarea
                     value={currentDiary.reflection}
                     onChange={(e) =>
                       handleDiaryChange("reflection", e.target.value)
                     }
-                    placeholder="从今天的经历中学到了什么？有什么可以改进的地方？"
+                    placeholder={t("journal.q3Placeholder")}
                     className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 placeholder-slate-300"
                   />
                 </div>
                 {/* 4. 其他 */}
                 <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm focus-within:ring-2 ring-indigo-100 transition">
                   <h3 className="text-indigo-500 font-bold flex items-center gap-2 mb-3">
-                    <AlignLeft className="w-5 h-5" /> 4. 碎片记录 (其他)
+                    <AlignLeft className="w-5 h-5" /> {t("journal.q4Title")}
                   </h3>
                   <textarea
                     value={currentDiary.other}
                     onChange={(e) => handleDiaryChange("other", e.target.value)}
-                    placeholder="闪念、备忘、梦境、或者随便写点什么..."
+                    placeholder={t("journal.emptyHistory")}
                     className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 placeholder-slate-300"
                   />
                 </div>
@@ -1250,7 +900,7 @@ export default function App() {
                   onClick={saveDiary}
                   className="w-full bg-teal-500 text-white py-4 rounded-xl font-bold shadow-lg shadow-teal-200 hover:bg-teal-600 transition flex items-center justify-center gap-2"
                 >
-                  <Save className="w-5 h-5" /> 保存今日日记
+                  <Save className="w-5 h-5" /> {t("journal.saveBtn")}
                 </button>
               </div>
             ) : (
@@ -1258,7 +908,7 @@ export default function App() {
               <div className="space-y-6">
                 {sortedDiaryKeys.length === 0 ? (
                   <div className="text-center py-20 text-slate-400">
-                    还没有写过日记，今天就开始记录吧。
+                    {t("journal.emptyHistory")}
                   </div>
                 ) : (
                   sortedDiaryKeys.map((dateStr) => {
@@ -1340,10 +990,11 @@ export default function App() {
           <div className="bg-yellow-500 p-8 text-white flex justify-between items-center relative overflow-hidden">
             <div className="relative z-10">
               <h1 className="text-3xl font-bold flex items-center gap-2">
-                <Award className="w-8 h-8" /> 荣誉陈列室
+                <Award className="w-8 h-8" /> {t("achievementsUI.title")}
               </h1>
               <p className="text-yellow-100 mt-2">
-                已点亮 {unlockedIds.length} / {ACHIEVEMENTS.length} 个不凡印记
+                {t("achievementsUI.unlockedPrefix")} {unlockedIds.length} /{" "}
+                {ACHIEVEMENTS.length} {t("achievementsUI.unlockedSuffix")}
               </p>
             </div>
             <button
@@ -1378,7 +1029,9 @@ export default function App() {
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-1">
-                      <h3 className="font-bold text-lg">{ach.title}</h3>
+                      <h3 className="font-bold text-lg">
+                        {t(`achievementsList.${ach.id}.title`)}
+                      </h3>
                       <span
                         className={`text-[10px] font-black px-2 py-1 rounded-md ${
                           isUnlocked
@@ -1386,10 +1039,12 @@ export default function App() {
                             : "bg-slate-200 text-slate-400"
                         }`}
                       >
-                        {rConf.label}
+                        {t(`achievementsList.${ach.id}.badge`)}
                       </span>
                     </div>
-                    <p className="text-xs opacity-80">{ach.desc}</p>
+                    <p className="text-xs opacity-80">
+                      {t(`achievementsList.${ach.id}.desc`)}
+                    </p>
                   </div>
                 </div>
               );
@@ -1408,10 +1063,10 @@ export default function App() {
           <div className="bg-indigo-600 p-6 text-white flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
-                <Settings className="w-6 h-6" /> 自定义课表
+                <Settings className="w-6 h-6" /> {t("modal.title")}
               </h1>
               <p className="text-indigo-200 text-sm mt-1">
-                打造属于你自己的心流节奏
+                {t("modal.subtitle")}
               </p>
             </div>
             <button
@@ -1453,7 +1108,7 @@ export default function App() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-500 mb-1">
-                      时间段 (如 08:00 - 12:00)
+                      {t("modal.timeSlot")}
                     </label>
                     <input
                       type="text"
@@ -1471,7 +1126,7 @@ export default function App() {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-slate-500 mb-1">
-                      任务类型
+                      {t("modal.taskType")}
                     </label>
                     <select
                       value={task.type}
@@ -1487,14 +1142,14 @@ export default function App() {
                     >
                       {Object.entries(typeConfig).map(([key, config]) => (
                         <option key={key} value={key}>
-                          {config.label}
+                          {t(config.label)}
                         </option>
                       ))}
                     </select>
                   </div>
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-slate-500 mb-1">
-                      主标题
+                      {t("modal.mainTitle")}
                     </label>
                     <input
                       type="text"
@@ -1512,7 +1167,7 @@ export default function App() {
                   </div>
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-slate-500 mb-1">
-                      描述 / 目标
+                      {t("modal.desc")}
                     </label>
                     <input
                       type="text"
@@ -1536,7 +1191,8 @@ export default function App() {
               onClick={() => addTask(editingDay)}
               className="w-full py-4 border-2 border-dashed border-indigo-300 text-indigo-600 font-bold rounded-2xl hover:bg-indigo-50 transition flex justify-center items-center gap-2"
             >
-              <Plus className="w-5 h-5" /> 添加新任务 ({weekDays[editingDay]})
+              <Plus className="w-5 h-5" /> {t("modal.addTask")} (
+              {weekDays[editingDay]})
             </button>
           </div>
 
@@ -1545,13 +1201,13 @@ export default function App() {
               onClick={resetToDefault}
               className="text-slate-400 hover:text-slate-600 text-sm font-medium px-4 py-2"
             >
-              恢复默认模板
+              {t("modal.restoreDefault")}
             </button>
             <button
               onClick={saveSchedule}
               className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition flex items-center gap-2"
             >
-              <Save className="w-5 h-5" /> 保存配置
+              <Save className="w-5 h-5" /> {t("modal.saveConfig")}
             </button>
           </div>
         </div>
@@ -1561,7 +1217,7 @@ export default function App() {
 
   // ================= 渲染：主界面 (打卡模式) =================
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans p-4 md:p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans p-4 md:p-8 relative overflow-hidden transition-colors duration-500">
       {/* 奖励浮窗提醒 */}
       {toastMsg && (
         <div className="fixed top-10 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
@@ -1571,41 +1227,40 @@ export default function App() {
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto dark:bg-slate-800 transition-colors duration-500">
         {/* Header 操作栏 */}
         <header className="mb-6">
           {/* 顶层：功能按钮组 */}
           <div className="flex justify-end gap-2 mb-2">
             <button
               onClick={() => setShowDiary(true)}
-              className="px-3 py-2 text-slate-500 hover:text-teal-600 hover:bg-teal-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
+              className="px-3 py-2 text-slate-500 hover:text-teal-600 hover:bg-teal-50 rounded-full transition flex items-center gap-1.5 text-sm font-medium"
             >
-              <PenTool className="w-4 h-4" /> <span>日记</span>
+              <PenTool className="w-4 h-4" /> <span>{t("app.journal")}</span>
             </button>
             <button
               onClick={() => setShowAchievements(true)}
-              className="px-3 py-2 text-slate-500 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
+              className="px-3 py-2 text-slate-500 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition flex items-center gap-1.5 text-sm font-medium"
             >
-              <Award className="w-4 h-4" /> <span>成就</span>
+              <Award className="w-4 h-4" /> <span>{t("app.achievements")}</span>
             </button>
             <button
               onClick={() => setIsEditing(true)}
-              className="px-3 py-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
+              className="px-3 py-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition flex items-center gap-1.5 text-sm font-medium"
             >
-              <Settings className="w-4 h-4" /> <span>定制</span>
+              <Settings className="w-4 h-4" /> <span>{t("app.customize")}</span>
             </button>
-
             <button
               onClick={handleExportData}
-              className="px-3 py-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
+              className="px-3 py-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition flex items-center gap-1.5 text-sm font-medium"
             >
-              <Download className="w-4 h-4" /> <span>导出</span>
+              <Download className="w-4 h-4" /> <span>{t("app.export")}</span>
             </button>
             <button
               onClick={() => setShowAbout(true)}
-              className="px-3 py-2 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition flex items-center gap-1.5 text-sm font-bold bg-white border border-slate-100 shadow-sm"
+              className="px-3 py-2 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition flex items-center gap-1.5 text-sm font-medium"
             >
-              <Mail className="w-4 h-4" /> <span>关于</span>
+              <Mail className="w-4 h-4" /> <span>{t("app.about")}</span>
             </button>
           </div>
 
@@ -1613,12 +1268,10 @@ export default function App() {
           <div className="flex justify-between items-end">
             <div>
               <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-                {isEnglish ? "Mind Flow" : "极简·心流"}
+                {t("app.title")}
               </h1>
               <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-2 font-medium">
-                {isEnglish
-                  ? "Focus deeper, output faster. Less is more."
-                  : "天赋加持，高效输出。少即是多。"}
+                {t("app.slogan")}
               </p>
             </div>
             <div className="text-right">
@@ -1628,23 +1281,31 @@ export default function App() {
                   minute: "2-digit",
                 })}
               </p>
-              <p className="text-xs md:text-sm text-slate-500 mt-1 font-medium">
-                {weekDays[dayOfWeek]}
+              <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">
+                {i18n.language === "en"
+                  ? weekDaysEn[dayOfWeek]
+                  : weekDaysZh[dayOfWeek]}
               </p>
             </div>
           </div>
+
           {/* 系统设置栏：深色模式与中英切换 */}
           <div className="flex justify-end items-center gap-2 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
             <button
-              onClick={() => setIsEnglish(!isEnglish)}
-              className="w-8 h-6 flex items-center justify-center text-xs border border-slate-300 rounded opacity-40 hover:opacity-100 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800 dark:text-slate-300 transition-all"
-              title={isEnglish ? "切换为中文" : "Switch to English"}
+              onClick={() =>
+                i18n.changeLanguage(i18n.language === "zh" ? "en" : "zh")
+              }
+              className="w-8 h-6 flex items-center justify-center text-xs border border-slate-300 rounded opacity-40 hover:opacity-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              title={
+                i18n.language === "zh" ? "Switch to English" : "切换为中文"
+              }
             >
-              {isEnglish ? "ZH" : "EN"}
+              {i18n.language === "zh" ? "EN" : "ZH"}
             </button>
+
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="w-8 h-6 flex items-center justify-center text-xs border border-slate-300 rounded opacity-40 hover:opacity-100 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800 transition-all"
+              className="w-8 h-6 flex items-center justify-center text-xs border border-slate-300 rounded opacity-40 hover:opacity-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               title={isDarkMode ? "切换为浅色" : "Switch to Dark Mode"}
             >
               {isDarkMode ? "☀️" : "🌙"}
@@ -1662,7 +1323,9 @@ export default function App() {
                 <p className="text-xs text-indigo-200 uppercase tracking-widest">
                   LEVEL {level}
                 </p>
-                <p className="text-lg font-bold">{title}</p>
+                <p className="text-lg font-bold">
+                  {t(`levels.level_${level}`)}
+                </p>
               </div>
             </div>
             <div className="w-full bg-indigo-950/50 rounded-full h-2.5 mt-3 overflow-hidden">
@@ -1694,8 +1357,9 @@ export default function App() {
               />
             </div>
             <p className="text-xs font-bold text-indigo-100">
-              连胜 <span className="text-white text-lg">{currentStreak}</span>{" "}
-              天
+              {t("app.streak")}{" "}
+              <span className="text-white text-lg">{currentStreak}</span>{" "}
+              {t("app.days")}
             </p>
           </div>
         </div>
@@ -1717,18 +1381,17 @@ export default function App() {
         <div className="space-y-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-indigo-500" /> 今日战线
+              <Clock className="w-5 h-5 text-indigo-500" />{" "}
+              {t("tasks.dailyFocus")}
             </h2>
             <span className="text-sm font-bold text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">
-              进度 {progressPercent}%
+              {t("tasks.progress")} {progressPercent}%
             </span>
           </div>
 
           {todayTasks.length === 0 && (
-            <div className="text-center py-10 bg-white rounded-2xl border-2 border-dashed border-slate-200">
-              <p className="text-slate-400">
-                今天没有安排任务，点击右上角"定制"添加。
-              </p>
+            <div className="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700">
+              <p className="text-slate-400">{t("tasks.emptyState")}</p>
             </div>
           )}
 
@@ -1745,13 +1408,13 @@ export default function App() {
                 key={task.id}
                 onClick={() => toggleTask(task.id)}
                 className={`relative flex p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer items-start gap-4 
-                  ${
-                    isChecked
-                      ? "bg-slate-50 border-slate-200 opacity-60"
-                      : isActiveNow
-                      ? "bg-white border-indigo-400 shadow-lg shadow-indigo-100 transform scale-[1.02] ring-4 ring-indigo-50"
-                      : "bg-white border-transparent shadow-sm hover:shadow-md hover:border-indigo-100"
-                  }`}
+                ${
+                  isChecked
+                    ? "bg-slate-50 border-slate-200 opacity-60 dark:bg-slate-800/50 dark:border-slate-700"
+                    : isActiveNow
+                    ? "bg-white border-indigo-400 shadow-lg shadow-indigo-100 transform scale-[1.02] ring-4 ring-indigo-50 dark:bg-slate-800 dark:shadow-indigo-900/20 dark:ring-indigo-900/30"
+                    : "bg-white border-transparent shadow-sm hover:shadow-md hover:border-indigo-100 dark:bg-slate-800 dark:border-slate-700"
+                }`}
               >
                 {/* 动态进行中标签 */}
                 {isActiveNow && !isChecked && (
@@ -1777,8 +1440,8 @@ export default function App() {
                     <span
                       className={`text-sm font-semibold tracking-wider ${
                         isActiveNow && !isChecked
-                          ? "text-indigo-600"
-                          : "text-slate-400"
+                          ? "text-indigo-600 dark:text-indigo-400"
+                          : "text-slate-400 dark:text-slate-500"
                       }`}
                     >
                       {task.time}
@@ -1786,21 +1449,23 @@ export default function App() {
                     <span
                       className={`text-xs px-2 py-1 rounded-md font-bold border ${config.color}`}
                     >
-                      {config.label}
+                      {t(config.label)}
                     </span>
                   </div>
                   <h3
                     className={`text-lg font-bold mb-1 ${
                       isChecked
-                        ? "text-slate-500 line-through"
-                        : "text-slate-800"
+                        ? "text-slate-500 line-through dark:text-slate-600"
+                        : "text-slate-800 dark:text-slate-100"
                     }`}
                   >
                     {task.title}
                   </h3>
                   <p
                     className={`text-sm ${
-                      isChecked ? "text-slate-400" : "text-slate-600"
+                      isChecked
+                        ? "text-slate-400 dark:text-slate-600"
+                        : "text-slate-600 dark:text-slate-300"
                     }`}
                   >
                     {task.desc}
@@ -1823,7 +1488,7 @@ export default function App() {
           })}
         </div>
         <footer className="mt-12 text-center text-slate-400 text-sm">
-          <p>掌控时间，不断进化。</p>
+          <p>{t("app.footerQuote")}</p>
         </footer>
         {/* ☕ 打赏模态框 */}
         {showDonate && (
@@ -1834,12 +1499,12 @@ export default function App() {
                   <Coffee className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-black text-slate-800">
-                  请开发者喝杯咖啡
+                  {t("app.coffee")}
                 </h3>
                 <p className="text-sm text-slate-500 mt-2 font-medium">
-                  如果你觉得这个工具对你有帮助，
+                  {t("app.donateDesc1")}
                   <br />
-                  欢迎打赏支持我的持续开发！
+                  {t("app.donateDesc2")}
                 </p>
               </div>
 
@@ -1853,7 +1518,7 @@ export default function App() {
                   />
                 </div>
                 <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">
-                  微信扫码，赞助开发者
+                  {t("donate.wechatPay")}
                 </span>
               </div>
 
@@ -1861,7 +1526,7 @@ export default function App() {
                 onClick={() => setShowDonate(false)}
                 className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition duration-200"
               >
-                下次一定 / 关闭
+                {t("donate.nextTime")}
               </button>
             </div>
           </div>
@@ -1875,41 +1540,40 @@ export default function App() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <h3 className="text-xl font-black text-slate-800">
-                  关于「极简·心流」
+                  {t("about.title")}
                 </h3>
               </div>
 
               <div className="space-y-4 text-sm text-slate-600 leading-relaxed bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                <p>
-                  这原本是我为自己打造的效率工具，旨在摒弃一切干扰，专注于当下。很高兴它也能帮到你。
-                </p>
+                <p>{t("about.intro")}</p>
 
                 <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
                   <p className="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
-                    <span className="text-lg">🔒</span> 隐私承诺
+                    <span className="text-lg">🔒</span>{" "}
+                    {t("about.privacyTitle")}
                   </p>
                   <p className="text-slate-500 text-xs">
-                    你的所有数据均保存在你的本地浏览器中，没有任何人能偷窥你的心血。
+                    {t("about.privacyDesc")}
                   </p>
                 </div>
                 {/* 📱 数据同步提醒 */}
                 <div className="p-3 bg-orange-50 rounded-xl border border-orange-100 shadow-sm">
                   <p className="font-bold text-orange-800 mb-1 flex items-center gap-1.5 text-xs">
-                    <span className="text-sm">⚠️</span> 重要提醒
+                    <span className="text-sm">⚠️</span>{" "}
+                    {t("about.warningTitle")}
                   </p>
                   <p className="text-orange-700 text-[10px] leading-relaxed">
-                    由于数据完全本地化，
-                    <strong>手机和电脑的数据是不互通的</strong>
-                    。更换设备或清理浏览器缓存会导致数据丢失，建议定期使用“导出”功能备份；中英文切换和深色模式正在熬夜优化中（已累瘫）
+                    {t("about.warningDescFull")}
                   </p>
                 </div>
 
                 <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
                   <p className="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
-                    <span className="text-lg">✉️</span> 联系开发者
+                    <span className="text-lg">✉️</span>{" "}
+                    {t("about.contactTitle")}
                   </p>
                   <p className="text-slate-500 text-xs mb-2">
-                    如果有任何建议、Bug 反馈，欢迎随时发邮件给我：
+                    {t("about.contactDesc")}
                   </p>
                   <a
                     href="mailto:guo15849323279@163.com"
@@ -1924,7 +1588,7 @@ export default function App() {
                 onClick={() => setShowAbout(false)}
                 className="mt-6 w-full py-3 bg-slate-800 hover:bg-slate-900 text-white rounded-2xl font-bold transition duration-200 shadow-lg shadow-slate-200"
               >
-                好的，继续专注
+                {t("about.closeBtn")}
               </button>
             </div>
           </div>
@@ -1936,7 +1600,7 @@ export default function App() {
             className="flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-orange-50 hover:text-orange-600 text-slate-500 rounded-full transition-all duration-300"
           >
             <Coffee className="w-4 h-4" />
-            <span className="text-sm font-bold">请开发者喝杯咖啡</span>
+            <span className="text-sm font-bold">{t("app.coffee")}</span>
           </button>
 
           {/* 极客专属签名 */}
