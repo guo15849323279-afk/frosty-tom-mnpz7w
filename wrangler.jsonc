@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "frosty-tom-mnpz7w",
+  "compatibility_date": "2026-04-14",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "build"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
