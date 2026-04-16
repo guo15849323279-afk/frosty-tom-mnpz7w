@@ -1227,11 +1227,11 @@ export default function App() {
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto dark:bg-slate-800 transition-colors duration-500">
+      <div className="max-w-2xl mx-auto transition-colors duration-500">
         {/* Header 操作栏 */}
         <header className="mb-6">
           {/* 顶层：功能按钮组 */}
-          <div className="flex justify-end gap-2 mb-2">
+          <div className="flex flex-wrap justify-center md:justify-end gap-2 mb-2">
             <button
               onClick={() => setShowDiary(true)}
               className="px-3 py-2 text-slate-500 hover:text-teal-600 hover:bg-teal-50 rounded-full transition flex items-center gap-1.5 text-sm font-medium"
