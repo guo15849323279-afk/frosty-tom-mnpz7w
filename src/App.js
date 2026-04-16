@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import AchievementBoard from "./components/AchievementBoard";
+import DiarySection from "./components/DiarySection";
+
 import {
   CheckCircle2,
   Circle,
@@ -473,7 +476,10 @@ export default function App() {
   const [toastMsg, setToastMsg] = useState(null);
 
   // 成就与定制状态
-  const [unlockedIds, setUnlockedIds] = useState([]);
+  const [unlockedIds, setUnlockedIds] = useState(() => {
+    const saved = localStorage.getItem("flow_unlockedIds");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [showAchievements, setShowAchievements] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [scheduleData, setScheduleData] = useState(defaultSchedule);
@@ -484,13 +490,25 @@ export default function App() {
   // 日记系统状态
   const [showDiary, setShowDiary] = useState(false);
   const [diaryMode, setDiaryMode] = useState("write"); // 'write' 或 'history'
-  const [diaryEntries, setDiaryEntries] = useState({});
+  const [diaryEntries, setDiaryEntries] = useState(() => {
+    const saved = localStorage.getItem("flow_diaryEntries");
+    return saved ? JSON.parse(saved) : {};
+  });
   const [currentDiary, setCurrentDiary] = useState({
     happy: "",
     unhappy: "",
     reflection: "",
     other: "",
   });
+  // 监听成就变化，一旦变化立刻存档
+  useEffect(() => {
+    localStorage.setItem("flow_unlockedIds", JSON.stringify(unlockedIds));
+  }, [unlockedIds]);
+
+  // 监听日记变化，一旦变化立刻存档
+  useEffect(() => {
+    localStorage.setItem("flow_diaryEntries", JSON.stringify(diaryEntries));
+  }, [diaryEntries]);
 
   // 1. 深色模式状态 (默认读取本地存储)
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -839,146 +857,15 @@ export default function App() {
           </div>
 
           {/* 内容区 */}
-          <div className="p-4 md:p-8 max-h-[70vh] overflow-y-auto hide-scrollbar bg-slate-50 dark:bg-slate-900">
-            {diaryMode === "write" ? (
-              <div className="space-y-6">
-                {/* 1. 开心 */}
-                <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm focus-within:ring-2 ring-green-100 transition">
-                  <h3 className="text-green-600 font-bold flex items-center gap-2 mb-3">
-                    <Smile className="w-5 h-5" />
-                    {t("journal.q1Title")}
-                  </h3>
-                  <textarea
-                    value={currentDiary.happy}
-                    onChange={(e) => handleDiaryChange("happy", e.target.value)}
-                    placeholder={t("journal.q1Placeholder")}
-                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500"
-                  />
-                </div>
-                {/* 2. 不开心 */}
-                <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm focus-within:ring-2 ring-slate-200 transition">
-                  <h3 className="text-slate-500 font-bold flex items-center gap-2 mb-3">
-                    <Frown className="w-5 h-5" /> {t("journal.q2Title")}
-                  </h3>
-                  <textarea
-                    value={currentDiary.unhappy}
-                    onChange={(e) =>
-                      handleDiaryChange("unhappy", e.target.value)
-                    }
-                    placeholder={t("journal.q2Placeholder")}
-                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500"
-                  />
-                </div>
-
-                {/* 3. 感悟 */}
-                <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm focus-within:ring-2 ring-yellow-100 transition">
-                  <h3 className="text-yellow-600 font-bold flex items-center gap-2 mb-3">
-                    <Lightbulb className="w-5 h-5" /> {t("journal.q3Title")}
-                  </h3>
-                  <textarea
-                    value={currentDiary.reflection}
-                    onChange={(e) =>
-                      handleDiaryChange("reflection", e.target.value)
-                    }
-                    placeholder={t("journal.q3Placeholder")}
-                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500"
-                  />
-                </div>
-                {/* 4. 其他 */}
-                {/* 4. 其他 */}
-                <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm focus-within:ring-2 ring-indigo-100 transition">
-                  <h3 className="text-indigo-500 font-bold flex items-center gap-2 mb-3">
-                    <AlignLeft className="w-5 h-5" /> {t("journal.q4Title")}
-                  </h3>
-                  <textarea
-                    value={currentDiary.other}
-                    onChange={(e) => handleDiaryChange("other", e.target.value)}
-                    placeholder={t("journal.emptyHistory")}
-                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500"
-                  />
-                </div>
-
-                <button
-                  onClick={saveDiary}
-                  className="w-full bg-teal-500 text-white py-4 rounded-xl font-bold shadow-lg shadow-teal-200 hover:bg-teal-600 transition flex items-center justify-center gap-2"
-                >
-                  <Save className="w-5 h-5" /> {t("journal.saveBtn")}
-                </button>
-              </div>
-            ) : (
-              /* 历史记录列表 */
-              <div className="space-y-6">
-                {sortedDiaryKeys.length === 0 ? (
-                  <div className="text-center py-20 text-slate-400">
-                    {t("journal.emptyHistory")}
-                  </div>
-                ) : (
-                  sortedDiaryKeys.map((dateStr) => {
-                    const entry = diaryEntries[dateStr];
-                    const isEmpty =
-                      !entry.happy &&
-                      !entry.unhappy &&
-                      !entry.reflection &&
-                      !entry.other;
-                    if (isEmpty) return null;
-
-                    return (
-                      <div
-                        key={dateStr}
-                        className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm"
-                      >
-                        <h2 className="font-black text-xl text-slate-800 mb-4 border-b border-slate-100 pb-2">
-                          {dateStr}
-                        </h2>
-                        <div className="space-y-4">
-                          {entry.happy && (
-                            <div>
-                              <p className="text-xs font-bold text-green-600 mb-1 flex items-center gap-1">
-                                <Smile className="w-3 h-3" /> 开心
-                              </p>
-                              <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
-                                {entry.happy}
-                              </p>
-                            </div>
-                          )}
-                          {entry.unhappy && (
-                            <div>
-                              <p className="text-xs font-bold text-slate-500 mb-1 flex items-center gap-1">
-                                <Frown className="w-3 h-3" /> 烦恼
-                              </p>
-                              <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
-                                {entry.unhappy}
-                              </p>
-                            </div>
-                          )}
-                          {entry.reflection && (
-                            <div>
-                              <p className="text-xs font-bold text-yellow-600 mb-1 flex items-center gap-1">
-                                <Lightbulb className="w-3 h-3" /> 感悟
-                              </p>
-                              <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
-                                {entry.reflection}
-                              </p>
-                            </div>
-                          )}
-                          {entry.other && (
-                            <div>
-                              <p className="text-xs font-bold text-indigo-500 mb-1 flex items-center gap-1">
-                                <AlignLeft className="w-3 h-3" /> 其他
-                              </p>
-                              <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
-                                {entry.other}
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            )}
-          </div>
+          <DiarySection
+            diaryMode={diaryMode}
+            currentDiary={currentDiary}
+            handleDiaryChange={handleDiaryChange}
+            saveDiary={saveDiary}
+            sortedDiaryKeys={sortedDiaryKeys}
+            diaryHistory={diaryEntries} // 👈 把等号右边换成它的真名 diaryEntries！
+            t={t}
+          />
         </div>
       </div>
     );
@@ -1009,51 +896,12 @@ export default function App() {
           </div>
 
           <div className="p-4 md:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 max-h-[75vh] overflow-y-auto hide-scrollbar">
-            {ACHIEVEMENTS.map((ach) => {
-              const isUnlocked = unlockedIds.includes(ach.id);
-              const rConf = rarityConfig[ach.rarity];
-              const AchIcon = ach.icon;
-              return (
-                <div
-                  key={ach.id}
-                  className={`p-4 rounded-xl border-2 flex items-center gap-4 transition-all duration-300 ${
-                    isUnlocked
-                      ? rConf.color + " dark:bg-slate-800 dark:border-slate-600"
-                      : "bg-slate-50 border-slate-100 opacity-50 dark:bg-slate-800/50 dark:border-slate-700"
-                  }`}
-                >
-                  <div
-                    className={`p-3 rounded-full flex-shrink-0 ${
-                      isUnlocked
-                        ? "bg-white/60 shadow-sm"
-                        : "bg-slate-200 dark:bg-slate-700"
-                    }`}
-                  >
-                    <AchIcon className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-1">
-                      <h3 className="font-bold text-lg !text-slate-800 dark:!text-slate-100">
-                        {t(`achievementsList.${ach.id}.title`)}
-                      </h3>
-
-                      <span
-                        className={`text-[10px] font-black px-2 py-1 rounded-md ${
-                          isUnlocked
-                            ? "bg-white/60"
-                            : "bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400"
-                        }`}
-                      >
-                        {t(`achievementsList.${ach.id}.badge`)}
-                      </span>
-                    </div>
-                    <p className="text-xs opacity-80 text-slate-600 dark:text-slate-300">
-                      {t(`achievementsList.${ach.id}.desc`)}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+            <AchievementBoard
+              ACHIEVEMENTS={ACHIEVEMENTS}
+              unlockedIds={unlockedIds}
+              rarityConfig={rarityConfig}
+              t={t}
+            />
           </div>
         </div>
       </div>
