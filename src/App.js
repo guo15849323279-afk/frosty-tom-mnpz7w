@@ -839,11 +839,11 @@ export default function App() {
           </div>
 
           {/* 内容区 */}
-          <div className="p-4 md:p-8 max-h-[70vh] overflow-y-auto hide-scrollbar bg-slate-50">
+          <div className="p-4 md:p-8 max-h-[70vh] overflow-y-auto hide-scrollbar bg-slate-50 dark:bg-slate-900">
             {diaryMode === "write" ? (
               <div className="space-y-6">
                 {/* 1. 开心 */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm focus-within:ring-2 ring-green-100 transition">
+                <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm focus-within:ring-2 ring-green-100 transition">
                   <h3 className="text-green-600 font-bold flex items-center gap-2 mb-3">
                     <Smile className="w-5 h-5" />
                     {t("journal.q1Title")}
@@ -852,11 +852,11 @@ export default function App() {
                     value={currentDiary.happy}
                     onChange={(e) => handleDiaryChange("happy", e.target.value)}
                     placeholder={t("journal.q1Placeholder")}
-                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 placeholder-slate-300"
+                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500"
                   />
                 </div>
                 {/* 2. 不开心 */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm focus-within:ring-2 ring-slate-200 transition">
+                <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm focus-within:ring-2 ring-slate-200 transition">
                   <h3 className="text-slate-500 font-bold flex items-center gap-2 mb-3">
                     <Frown className="w-5 h-5" /> {t("journal.q2Title")}
                   </h3>
@@ -866,11 +866,12 @@ export default function App() {
                       handleDiaryChange("unhappy", e.target.value)
                     }
                     placeholder={t("journal.q2Placeholder")}
-                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 placeholder-slate-300"
+                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500"
                   />
                 </div>
+
                 {/* 3. 感悟 */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm focus-within:ring-2 ring-yellow-100 transition">
+                <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm focus-within:ring-2 ring-yellow-100 transition">
                   <h3 className="text-yellow-600 font-bold flex items-center gap-2 mb-3">
                     <Lightbulb className="w-5 h-5" /> {t("journal.q3Title")}
                   </h3>
@@ -880,11 +881,12 @@ export default function App() {
                       handleDiaryChange("reflection", e.target.value)
                     }
                     placeholder={t("journal.q3Placeholder")}
-                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 placeholder-slate-300"
+                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500"
                   />
                 </div>
                 {/* 4. 其他 */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm focus-within:ring-2 ring-indigo-100 transition">
+                {/* 4. 其他 */}
+                <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm focus-within:ring-2 ring-indigo-100 transition">
                   <h3 className="text-indigo-500 font-bold flex items-center gap-2 mb-3">
                     <AlignLeft className="w-5 h-5" /> {t("journal.q4Title")}
                   </h3>
@@ -892,7 +894,7 @@ export default function App() {
                     value={currentDiary.other}
                     onChange={(e) => handleDiaryChange("other", e.target.value)}
                     placeholder={t("journal.emptyHistory")}
-                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 placeholder-slate-300"
+                    className="w-full h-24 bg-transparent outline-none resize-none text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500"
                   />
                 </div>
 
@@ -1016,33 +1018,36 @@ export default function App() {
                   key={ach.id}
                   className={`p-4 rounded-xl border-2 flex items-center gap-4 transition-all duration-300 ${
                     isUnlocked
-                      ? rConf.color
-                      : "bg-slate-50 border-slate-100 opacity-50"
+                      ? rConf.color + " dark:bg-slate-800 dark:border-slate-600"
+                      : "bg-slate-50 border-slate-100 opacity-50 dark:bg-slate-800/50 dark:border-slate-700"
                   }`}
                 >
                   <div
                     className={`p-3 rounded-full flex-shrink-0 ${
-                      isUnlocked ? "bg-white/60 shadow-sm" : "bg-slate-200"
+                      isUnlocked
+                        ? "bg-white/60 shadow-sm"
+                        : "bg-slate-200 dark:bg-slate-700"
                     }`}
                   >
                     <AchIcon className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-1">
-                      <h3 className="font-bold text-lg">
+                      <h3 className="font-bold text-lg !text-slate-800 dark:!text-slate-100">
                         {t(`achievementsList.${ach.id}.title`)}
                       </h3>
+
                       <span
                         className={`text-[10px] font-black px-2 py-1 rounded-md ${
                           isUnlocked
                             ? "bg-white/60"
-                            : "bg-slate-200 text-slate-400"
+                            : "bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400"
                         }`}
                       >
                         {t(`achievementsList.${ach.id}.badge`)}
                       </span>
                     </div>
-                    <p className="text-xs opacity-80">
+                    <p className="text-xs opacity-80 text-slate-600 dark:text-slate-300">
                       {t(`achievementsList.${ach.id}.desc`)}
                     </p>
                   </div>
